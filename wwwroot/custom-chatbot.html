@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .header img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+            background: url('watermark.svg') no-repeat center center; /* Add the watermark image here */
+            background-size: contain;
+        }
+        .chat-bubble {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            max-width: 80%;
+            position: relative;
+            z-index: 1;
+        }
+        .chat-bubble.user {
+            align-self: flex-end;
+            background-color: #e0e0e0; /* Grey color for user messages */
+        }
+        .chat-bubble.bot {
+            align-self: flex-start;
+            background-color: #4CAF50; /* #4CAF50 color for bot messages */
+            color: white;
+        }
+        .input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .loading {
+            display: inline-block;
+        }
+        .loading span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            margin-right: 4px;
+            background-color: #333;
+            border-radius: 50%;
+            animation: loading 0.8s infinite;
+        }
+        .loading span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .loading span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .loading span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes loading {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img src="logo.png" alt="Logo" id="logo">
+    <h1>Wellness Chatbot</h1>
+</div>
+
+<div class="chat-container" id="chat-container">
+</div>
+
+<div class="input-container">
+    <input type="text" id="user-input" placeholder="Type your question here..." onkeypress="handleKeyPress(event)" />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    let chatHistory = [];
+
+    function appendMessage(text, sender) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('chat-bubble', sender);
+        bubble.textContent = text;
+        chatContainer.appendChild(bubble);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function appendLoading() {
+        const bubble = document.createElement('div');
+        bubble.classList.add('chat-bubble', 'bot');
+        bubble.id = 'loading-bubble';
+        bubble.innerHTML = '<div class="loading"><span></span><span></span><span></span></div>';
+        chatContainer.appendChild(bubble);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function removeLoading() {
+        const loadingBubble = document.getElementById('loading-bubble');
+        if (loadingBubble) {
+            chatContainer.removeChild(loadingBubble);
+        }
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    async function sendMessage() {
+        const question = userInput.value.trim();
+        if (!question) return;
+
+        appendMessage(question, 'user');
+        userInput.value = '';
+
+        appendLoading();
+        
+        const username = getCookie('username');
+        const apiInput = {
+            question: question,
+            chat_history: chatHistory,
+            username: username
+        };
+
+
+        const apiUrl = 'hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck2?';
+        const urlParams = new URLSearchParams(window.location.search);
+        const password = urlParams.get('password');
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'password': password })
+        });
+        
+        const responseData = await response.json();
+
+        try {
+            const response = await fetch(`${responseData.url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(apiInput)
+            });
+
+            const data = await response.json();
+            const answer = data.answer;
+
+            removeLoading();
+            appendMessage(answer, 'bot');
+
+            chatHistory.push({
+                inputs: { question: question },
+                outputs: { answer: answer }
+            });
+
+        } catch (error) {
+            removeLoading();
+            appendMessage('Error: Unable to get a response from the server.', 'bot');
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    window.onload = () => {
+        const username = getCookie('username');
+        appendMessage(`Hi ${username}, I'm Doctor Luigi! I'm here to help you with any product related questions you might have.`, 'bot');
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+.env
+.deployment
+config.zip
+bin
+obj

@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Check</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: 'Arial', sans-serif;
+    }
+    .container {
+        width: 300px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input[type="password"], input[type="button"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+    input[type="button"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    input[type="button"]:hover {
+        background-color: #45a049;
+    }
+</style>
+<script>
+async function checkPassword() {
+    const password = document.getElementById('password').value;
+    const apiUrl = 'hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck?';
+    
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password: password })
+    });
+    
+    if (response.ok) {
+        const data = await response.json();
+        if (data.value === true) {
+            window.location.href = `chatbot.html?password=${password}`;
+        } else {
+            alert('Invalid password. Please try again.');
+        }
+    } else {
+        alert('An error occurred while checking the password.');
+    }
+}
+</script>
+</head>
+<body>
+<div class="container">
+    <input type="password" id="password" placeholder="Enter password for access">
+    <input type="button" value="Submit" onclick="checkPassword()">
+    <input type="button" value="Go to Custom UI" onclick="window.location.href='custom-login.html';">
+</div>
+</body>
+</html>

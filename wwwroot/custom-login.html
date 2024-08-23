@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-container h1 {
+            margin: 0 0 15px;
+        }
+        .login-container input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-container .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h1>Login</h1>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <div class="error" id="error-message"></div>
+</div>
+
+<script>
+    async function login() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const errorMessage = document.getElementById('error-message');
+
+        if (!username || !password) {
+            errorMessage.textContent = "Username and password are required.";
+            return;
+        }
+
+        const apiInput = {
+            password: password
+        };
+
+        try {
+            const response = await fetch('hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck2?', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(apiInput)
+            });
+
+            const data = await response.json();
+
+            if (data.value) {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (24 * 60 * 60 * 1000)); // 1 day expiration
+                document.cookie = `username=${username}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+                window.location.href = `custom-chatbot.html?password=${password}`;
+            } else {
+                errorMessage.textContent = "Incorrect password. Please try again.";
+            }
+
+        } catch (error) {
+            errorMessage.textContent = "Error: Unable to authenticate. Please try again.";
+        }
+    }
+</script>
+
+</body>
+</html>
