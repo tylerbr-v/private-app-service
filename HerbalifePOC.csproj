@@ -12,4 +12,18 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Custom Target for Azure Deployment Fix -->
+  <Target Name="pipelinePreDeployCopyAllFilesToOneFolder">
+    <!-- Intentionally left blank to satisfy Azure deployment scripts -->
+  </Target>
+
 </Project>
