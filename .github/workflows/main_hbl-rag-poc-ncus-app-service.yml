@@ -36,13 +36,13 @@ jobs:
         path: ${{github.workspace}}/published.zip
 
     - name: Azure login
-        uses: azure/login@v2
-        with:
-          auth-type: IDENTITY
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C5AAA3F6CA334CCAB04FCB6CF6DB7C32 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6AAA9FD2E4124853AEB37D8434A8FDD2 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2EEA2BFC072C483E824F6E84AEC88A9F }}
-          enable-AzPSSession: true
+      uses: azure/login@v2
+      with:
+        auth-type: IDENTITY
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C5AAA3F6CA334CCAB04FCB6CF6DB7C32 }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6AAA9FD2E4124853AEB37D8434A8FDD2 }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2EEA2BFC072C483E824F6E84AEC88A9F }}
+        enable-AzPSSession: true
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
