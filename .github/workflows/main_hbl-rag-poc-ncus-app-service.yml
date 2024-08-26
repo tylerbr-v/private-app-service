@@ -65,6 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ASP-app
+          path: 'C:\Users\hbl-rag-poc-account\actions-runner\_work\private-app-service\private-app-service'
 
       - name: Login to Azure
         uses: azure/login@v2
