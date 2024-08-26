@@ -61,11 +61,18 @@ jobs:
               run_id: context.runId
             });
             console.log(artifacts.data);
+
+      - name: Check directory and permissions
+        run: |
+          mkdir -p C:\Users\hbl-rag-poc-account\actions-runner\_work\private-app-service\downloads
+          icacls C:\Users\hbl-rag-poc-account\actions-runner\_work\private-app-service\downloads
+        shell: cmd
+        
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: ASP-app
-          path: 'C:\Users\hbl-rag-poc-account\actions-runner\_work\private-app-service\private-app-service'
+          path: 'C:\Users\hbl-rag-poc-account\actions-runner\_work\private-app-service\downloads'
 
       - name: Login to Azure
         uses: azure/login@v2
