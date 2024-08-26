@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: 'D:/a/private-app-service/private-app-service/published/**'
+          path: 'D:/a/private-app-service/private-app-service/**'
 
   deploy:
     runs-on: windows-latest
