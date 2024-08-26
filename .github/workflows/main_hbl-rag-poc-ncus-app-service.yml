@@ -50,6 +50,11 @@ jobs:
       id-token: write #This is required for requesting the JWT
 
     steps:
+      - name: List output files
+        run: |
+          echo "Listing files in the deployment directory..."
+          dir /s "C:\Users\hbl-rag-poc-account\actions-runner\_work\private-app-service\private-app-service"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
