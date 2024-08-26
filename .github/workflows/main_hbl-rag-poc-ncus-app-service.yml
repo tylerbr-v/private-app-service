@@ -12,13 +12,15 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup MSBuild path
         uses: microsoft/setup-msbuild@v1.0.2
+        with:
+          ms-build-path: 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe'
 
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
