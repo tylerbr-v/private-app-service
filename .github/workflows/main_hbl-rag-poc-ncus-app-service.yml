@@ -2,6 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy ASP app to Azure Web App - hbl-rag-poc-ncus-app-service
+runs-on: self-hosted
 
 on:
   push:
