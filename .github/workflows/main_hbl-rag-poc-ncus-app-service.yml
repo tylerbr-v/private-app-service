@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: 'D:/a/private-app-service/private-app-service/**'
+          path: 'C:/Users/hbl-rag-poc-account/actions-runner/_work/private-app-service/private-app-service/**'
 
   deploy:
     runs-on: self-hosted
