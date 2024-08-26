@@ -28,11 +28,14 @@ jobs:
       - name: Publish to folder
         run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
 
+      - name: List contents of the working directory
+        run: dir
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: 'D:\a\private-app-service\private-app-service/published/**'
+          path: 'D:/a/private-app-service/private-app-service/published/**'
 
   deploy:
     runs-on: windows-latest
