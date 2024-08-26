@@ -50,25 +50,32 @@ jobs:
       id-token: write #This is required for requesting the JWT
 
     steps:
-      - name: List output files
-        run: dir
 
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: ASP-app
+          continue-on-error: true # Prevents the workflow from failing immediately
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C5AAA3F6CA334CCAB04FCB6CF6DB7C32 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6AAA9FD2E4124853AEB37D8434A8FDD2 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2EEA2BFC072C483E824F6E84AEC88A9F }}
+      - name: Check Artifact
+        run: |
+          if [ -f "path/to/download/my-artifact" ]; then
+            echo "Artifact downloaded successfully."
+          else
+            echo "Artifact download failed or file not present."
+          fi
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'hbl-rag-poc-ncus-app-service'
-          slot-name: 'Production'
-          package: .
+      # - name: Login to Azure
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C5AAA3F6CA334CCAB04FCB6CF6DB7C32 }}
+      #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6AAA9FD2E4124853AEB37D8434A8FDD2 }}
+      #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2EEA2BFC072C483E824F6E84AEC88A9F }}
+
+      # - name: Deploy to Azure Web App
+      #   id: deploy-to-webapp
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: 'hbl-rag-poc-ncus-app-service'
+      #     slot-name: 'Production'
+      #     package: .
