@@ -8,7 +8,7 @@
     body {
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
+        background-color: #f7f8f2;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -17,7 +17,7 @@
     }
     .container {
         width: 300px;
-        padding: 20px;
+        padding: 40px;
         background-color: white;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -31,19 +31,19 @@
         font-size: 16px;
     }
     input[type="button"] {
-        background-color: #4CAF50;
+        background-color: #3a5137;
         color: white;
         border: none;
         cursor: pointer;
     }
     input[type="button"]:hover {
-        background-color: #45a049;
+        background-color: #3a5137;
     }
 </style>
 <script>
 async function checkPassword() {
     const password = document.getElementById('password').value;
-    const apiUrl = 'hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck?';
+    const apiUrl = 'https://hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck?';
     
     const response = await fetch(apiUrl, {
         method: 'POST',
@@ -68,6 +68,7 @@ async function checkPassword() {
 </head>
 <body>
 <div class="container">
+    <h1>Login</h1>
     <input type="password" id="password" placeholder="Enter password for access">
     <input type="button" value="Submit" onclick="checkPassword()">
     <input type="button" value="Go to Custom UI" onclick="window.location.href='custom-login.html';">

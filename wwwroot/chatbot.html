@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f7f8f2;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,7 +26,7 @@
         .chatbot-header {
             width: 100%;
             height: 50px;
-            background-color: #4CAF50;
+            background-color: #3a5137;
             position: absolute;
             top: 0;
             left: 0;
@@ -49,7 +49,7 @@
     </style>
     <script>
     async function fetchApiData(password) {
-        const apiUrl = 'hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck?';
+        const apiUrl = 'https://hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck?';
         
         const response = await fetch(apiUrl, {
             method: 'POST',

@@ -12,13 +12,14 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background-color: #F7F8F2;
         }
         .header {
             display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
+            align-items: flex-end;
+            padding: 20px 20px;
+            background-color: white;
+            color: #3a5137;
         }
         .header img {
             height: 40px;
@@ -26,7 +27,8 @@
         }
         .header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 30px;
+            font-family: Arial, Helvetica, sans-serif;
         }
         .chat-container {
             flex: 1;
@@ -48,12 +50,12 @@
         }
         .chat-bubble.user {
             align-self: flex-end;
-            background-color: #e0e0e0; /* Grey color for user messages */
+            background-color: #2e4441; /* #4CAF50 color for bot messages */
+            color: #f7f8f2;
         }
         .chat-bubble.bot {
             align-self: flex-start;
-            background-color: #4CAF50; /* #4CAF50 color for bot messages */
-            color: white;
+            background-color: white; /* #4CAF50 color for bot messages */
         }
         .input-container {
             display: flex;
@@ -106,7 +108,7 @@
 <body>
 
 <div class="header">
-    <img src="logo.png" alt="Logo" id="logo">
+    <img src="logo.svg" alt="Logo" id="logo">
     <h1>Wellness Chatbot</h1>
 </div>
 
@@ -170,7 +172,7 @@
         };
 
 
-        const apiUrl = 'hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck2?';
+        const apiUrl = 'https://hbl-rag-poc-ncus-app-service-bag4aecre2dnbue5.eastus-01.azurewebsites.net/api/passwordcheck2?';
         const urlParams = new URLSearchParams(window.location.search);
         const password = urlParams.get('password');
 
