@@ -17,6 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Change directory to web-app
+        run: cd app-service
+
       - name: Setup MSBuild path
         uses: microsoft/setup-msbuild@v1.0.2
         with:
@@ -26,19 +29,16 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.5
 
       - name: Restore NuGet packages
-        run: nuget restore '.\app-service\Herbalifepoc.sln'
+        run: nuget restore Herbalifepoc.sln
 
       - name: Publish to folder
         run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
-
-      - name: List contents of the working directory
-        run: dir
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: '.\app-service'
+          path: '.'
 
   deploy:
     runs-on: self-hosted
@@ -64,7 +64,7 @@ jobs:
 
       - name: Check directory and permissions
         run: |
-          mkdir -p .\app-service\downloads
+          mkdir -p .\downloads
           icacls .\downloads
         shell: cmd
         
@@ -72,7 +72,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ASP-app
-          path: '.\app-service\downloads'
+          path: '.\downloads'
 
       - name: Login to Azure
         uses: azure/login@v2
