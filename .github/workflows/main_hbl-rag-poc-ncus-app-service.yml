@@ -13,7 +13,9 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-
+    defaults:
+      run:
+        working-directory: app-service
     steps:
       - uses: actions/checkout@v4
 
@@ -42,6 +44,9 @@ jobs:
 
   deploy:
     runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: app-service
     needs: build
     environment:
       name: 'Production'
