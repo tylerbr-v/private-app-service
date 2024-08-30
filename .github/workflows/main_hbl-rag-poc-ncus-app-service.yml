@@ -19,9 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Change directory to web-app
-        run: cd app-service
-
       - name: Setup MSBuild path
         uses: microsoft/setup-msbuild@v1.0.2
         with:
